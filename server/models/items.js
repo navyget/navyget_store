@@ -42,13 +42,18 @@ const ItemSchema = mongoose.Schema({
   },
   _storeId: {
     type: mongoose.Schema.Types.ObjectId,
+    required: true,
     ref: 'Stores',
+  },
+  _storeAdmin: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
   },
 });
 
 // update update_at on creation
 
-/*eslint-disable */
+/* eslint-disable-next-line */
 ItemSchema.pre('save', function (next) {
   const item = this;
   const currentDate = new Date();
@@ -56,12 +61,15 @@ ItemSchema.pre('save', function (next) {
   next();
 });
 
+// update update_at on update
+
+/* eslint-disable-next-line */
 ItemSchema.pre('findOneAndUpdate', function (next) {
   const item = this;
-  item.update({}, {$set: {updated_at: new Date()}});
+  item.update({}, { $set: { updated_at: new Date() } });
   next();
 });
 
-const Items = mongoose.model('Item', ItemSchema);
+const Items = mongoose.model('Items', ItemSchema);
 
-module.exports = {Items};
+module.exports = { Items };
