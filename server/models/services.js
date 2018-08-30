@@ -2,33 +2,43 @@ import mongoose from 'mongoose';
 
 const ServiceSchema = mongoose.Schema({
   service_name: {
-
+    type: String,
+    required: true,
+    trim: true,
   },
   service_price: {
-
+    type: Number,
+    required: true,
   },
   service_description: {
-
+    type: String,
+    required: true,
+    trim: true,
   },
   service_category: {
-
+    type: String,
+    required: true,
   },
   service_subcategory: {
-
+    type: String,
+    required: true,
   },
   service_attributes: [{
     attribute_name: {
-
+      type: String,
+      required: true,
     },
     attribute_value: {
-
+      type: String,
+      required: true,
     },
   }],
   created_at: {
-
+    type: Date,
+    default: Date.now,
   },
   updated_at: {
-
+    type: Date,
   },
   _storeId: {
     type: mongoose.Schema.Types.ObjectId,
