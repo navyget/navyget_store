@@ -25,20 +25,23 @@ const ItemSchema = mongoose.Schema({
   },
   item_attributes: [{
     attribute_name: {
-
+      type: String,
+      required: true,
     },
     attribute_value: {
-
+      type: String,
+      required: true,
     },
   }],
   availability: {
     type: Boolean,
   },
   created_at: {
-
+    type: Date,
+    default: Date.now,
   },
   updated_at: {
-
+    type: Date,
   },
   _storeId: {
     type: mongoose.Schema.Types.ObjectId,
