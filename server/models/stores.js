@@ -91,4 +91,4 @@ StoresSchema.pre('findOneAndUpdate', function (next) {
 
 const Stores = mongoose.model('Stores', StoresSchema);
 
-module.exports = { Stores };
+export default Stores;

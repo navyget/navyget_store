@@ -75,4 +75,4 @@ ItemSchema.pre('findOneAndUpdate', function (next) {
 
 const Items = mongoose.model('Items', ItemSchema);
 
-module.exports = { Items };
+export default Items;
