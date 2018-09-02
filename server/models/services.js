@@ -72,4 +72,4 @@ ServiceSchema.pre('findOneAndUpdate', function (next) {
 
 const Services = mongoose.model('Services', ServiceSchema);
 
-module.exports = { Services };
+export default Services;

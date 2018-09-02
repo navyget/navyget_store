@@ -1,6 +1,19 @@
-const mongoose = require('mongoose');
+import express from 'express';
+import bodyParser from 'body-parser';
+import {ObjectID} from 'mongodb';
+import {mongoose} from './db/mongoose';
+import {Stores} from './models/stores';
 
-// set up mongoose to use promises
+const { Stores } = require('./models/stores');
+const { Items } = require('./models/items');
+const { Services } = require('./models/services');
 
-mongoose.Promise = global.promise;
-mongoose.connect('mongodb://localhost:27017/navyget_store_db');
+
+const app = express();
+const port  = process.env.PORT || 3000;
+
+app.use(bodyParser.json());
+
+app.listen(port, () => {
+  console.log(`Started on port ${port}`);
+});
