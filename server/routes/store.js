@@ -10,6 +10,17 @@ const router = express.Router();
 
 /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
 
+// business user can create a store (private)
+router.post('/store', (req, res) => {
+  const storebody = _.pick(req.body, ['store_name', 'store_type', 'store_category', 'location', '_storeAdmin']);
+  const store = new Stores(storebody);
+  store.save().then((createdStore) => {
+    res.send({ createdStore });
+  }).catch((e) => {
+    res.status(400).send(e);
+  });
+});
+
 // can view a particular store profile (public)
 router.get('/:storeId', (req, res) => {
   const { storeId } = req.params;
