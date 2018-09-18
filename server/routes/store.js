@@ -3,6 +3,7 @@ import { ObjectID } from 'mongodb';
 import Stores from '../models/stores';
 import Items from '../models/items';
 import Services from '../models/services';
+import decode from '../middleware/decode';
 
 const _ = require('lodash');
 
@@ -27,9 +28,11 @@ router.get('/:storeId', (req, res) => {
 });
 
 // can view my store profile (private) (not)
-router.get('/myStore/view', authenticate, (req, res) => {
-  const userId = res.user._id;
-  if (req.account !== 'business account') {
+router.get('/myStore/view', (req, res) => {
+  const token = req.get('x-auth');
+  const user = decode(token);
+  const userId = user._id;
+  if (user.account !== 'business account') {
     return res.status().send({
       message: 'Unauthorized account.',
     });
@@ -420,4 +423,4 @@ router.get('/:storeId/services', (req, res) => {
   });
 });
 
-module.exports = router;
+export default router;

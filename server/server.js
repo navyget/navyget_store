@@ -1,19 +1,13 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import {ObjectID} from 'mongodb';
-import {mongoose} from './db/mongoose';
-import {Stores} from './models/stores';
-
-const { Stores } = require('./models/stores');
-const { Items } = require('./models/items');
-const { Services } = require('./models/services');
-
+import storeRoutes from './routes/store';
 
 const app = express();
-const port  = process.env.PORT || 3000;
+const port = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
+app.use('/navyget-api/v1/store', storeRoutes)
 
 app.listen(port, () => {
-  console.log(`Started on port ${port}`);
+  console.log(`Started on Navyget store micro-service on ${port}`);
 });
