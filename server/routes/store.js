@@ -9,7 +9,32 @@ const _ = require('lodash');
 
 const router = express.Router();
 
-/* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
+/* eslint no-underscore-dangle: ["error", { "allow": ["_id", "_storeAdmin"] }] */
+
+// create a store (private)
+router.post('/store', (req, res) => {
+  const token = req.get('x-auth');
+  const user = decode(token);
+  if (!user) {
+    return res.status(401).send({
+      message: 'unauthorized parameters',
+    });
+  }
+  const storeBody = _.pick(req.body, ['store_name', 'store_type', 'store_category', 'location', '_storeAdmin']);
+  if (user._id !== storeBody._storeAdmin || user.accountType !== 'business account') {
+    return res.status(401).send({
+      message: 'unauthorized parameters',
+    });
+  }
+  const store = new Stores(storeBody);
+  store.save().then((shop) => {
+    res.status(200).send({
+      shop,
+    });
+  }).catch((e) => {
+    res.status(400).send(e);
+  });
+});
 
 // can view a particular store profile (public)
 router.get('/:storeId', (req, res) => {
@@ -17,11 +42,11 @@ router.get('/:storeId', (req, res) => {
   if (!ObjectID.isValid(storeId)) {
     return res.status(404).send();
   }
-  Stores.findById(storeId).then((store) => {
+  return Stores.findById(storeId).then((store) => {
     if (!store) {
       return res.status(404).send();
     }
-    res.send({ store });
+    return res.send({ store });
   }, (e) => {
     res.send(e);
   });
@@ -37,13 +62,13 @@ router.get('/myStore/view', (req, res) => {
       message: 'Unauthorized account.',
     });
   }
-  Stores.findOne({ _storeAdmin: userId }).then((store) => {
+  return Stores.findOne({ _storeAdmin: userId }).then((store) => {
     if (!store) {
       return res.status(404).send({
         message: 'Store does not exist',
       });
     }
-    res.send({ store });
+    return res.send({ store });
   }, (e) => {
     res.status(400).send(e);
   });
